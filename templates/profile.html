@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile page</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    {% load static %}
+    <link rel="stylesheet" href="{% static "css/main.css"%}">
+</head>
+<body>
+    {% load account %}
+    {% load socialaccount %}
+    {% if user.is_authenticated %}
+
+        <form method="post" action="/accounts/logout/">
+            <div class="card mb-3 cart-container">
+                <div class="row no-gutters">
+                    <div class="col-md-4">
+                        <img src="{{user.socialaccount_set.all.0.get_avatar_url}}" alt="avatar" class="card-img-top rounded">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ first_name }} {{last_name}}</h5>
+                            <p class="card-text"><small class="text-muted"> {{city}}</small></p> 
+                            <p class="card-text"><small class="text-muted">{{bdate}}</small></p>                     
+                        </div>
+                            {% csrf_token %}  
+                            <button type="submit" class="btn btn-dark btn-primary btn_possition">Выйти</button>   
+                    </div>
+                </div>
+            </div>                   
+        </form>
+            <div class="card " style="max-width: 540px; margin:0 auto ; margin-top: 1rem; padding: 0 auto;">
+                <h5 style="padding: 0 auto; margin:0 auto ;"> 5 твоих друзей:</h5>
+                <ul class="" style="padding: 0 auto; margin:0 auto ;">
+                    {% for friend in friends %}
+                    <li>
+                        <a href="{{ friend }}" target="blank">{{ friend }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>   
+            </div>               
+    {% endif %}              
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static "css/main.css"%}"> 
+</head>
+<body>
+        {% load socialaccount %}
+        {% if user.is_authenticated %}   
+            <div class="containers">
+                <p class="is_authenticated">Уже авторизован, перенаправляю в профиль.</p>
+                <meta http-equiv="refresh" content="2.5;http://127.0.0.1:8000/accounts/profile/">   
+            </div>
+        {% else %}
+            {% if user.is_anonymous %}                
+                <div class="auth_button_container">
+                    <p>Не авторизован.</p>
+                    <button class="btn btn-primary">
+                    <a class="badge badge-pill badge-primary" href="{% provider_login_url "vk" %}">Login with VK</a>
+                    </button>
+                </div>
+            {% endif%}
+        {% endif%}
+</body>
+</html>
