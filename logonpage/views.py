@@ -26,20 +26,9 @@ def profile(request):
             #allinfo = SocialAccount.objects.filter(provider='vk')[0].extra_data
             #TOKEN = SocialToken.objects.filter(user=request.user, provider='vk')[0]
             TOKEN =  SocialToken.objects.filter(account__user=request.user, account__provider='vk')
-            def get_friend():
-                offset = randint(0, 9)
-                r = requests.get("https://api.vk.com/method/friends.get", params={'user_id':user_id, "v":5.122 ,'count': 5, "offset":offset, "access_token":TOKEN})
-                response = r.json()
+            
 
-                friends_resp = response['response']['items']
-                friends_list = []
-
-                for friend in friends_resp:
-                    friends_list.append(f'https://vk.com/id{friend}')
-
-                return friends_list
-
-            friends = get_friend()
+            friends = get_friend(user_id, TOKEN)
 
             context = {
                 'first_name': first_name,
@@ -51,6 +40,39 @@ def profile(request):
             }
             return render(request, 'profile.html', context)
         except:
-            pass
+            return 'Ошибка'
     else:
         return render(request, 'redirect.html')
+
+
+def get_friend(user_id, TOKEN):
+    offset = randint(0, 15)
+    friend_list_count = 5
+    request_params = {
+        'user_id': user_id, 
+        'count': friend_list_count, 
+        'offset': offset,
+        'fields': 'photo_200',
+        'v': 5.122 , 
+        'access_token': TOKEN}
+    try:
+        r = requests.get("https://api.vk.com/method/friends.get", params=request_params)
+        response = r.json()
+
+        friends_resp = response['response']['items']
+        friends_list = []
+
+        for friend in friends_resp:
+            #friends_list.append(f'https://vk.com/id{friend}')
+            friend_profile = {
+                'first_name': friend['first_name'],
+                'last_name': friend['last_name'],
+                'photo_200': friend['photo_200']
+            }
+            friends_list.append(friend_profile)
+        return friends_list
+    except:
+        return 'Ошибка'
+
+
+    

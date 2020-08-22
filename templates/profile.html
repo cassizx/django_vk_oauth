@@ -32,14 +32,21 @@
             </div>                   
         </form>
             <div class="card " style="max-width: 540px; margin:0 auto ; margin-top: 1rem; padding: 0 auto;">
-                <h5 style="padding: 0 auto; margin:0 auto ;"> 5 твоих друзей:</h5>
-                <ul class="" style="padding: 0 auto; margin:0 auto ;">
-                    {% for friend in friends %}
-                    <li>
-                        <a href="{{ friend }}" target="blank">{{ friend }}</a>
-                    </li>
-                    {% endfor %}
-                </ul>   
+                <br> <h5 style="padding: 0 auto; margin:0 auto ;"> 5 твоих друзей:</h5> <br>
+                <div class="row row-cols-3 row-cols-md-3">
+                    {% for friend in friends %}  
+                    <div class="col mb-4">
+                        <div class="card h-100">
+                        <div class="card">
+                            <img src="{{friend.photo_200}}" class="card-img-top" alt="friend_photo">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ friend.first_name }} {{friend.last_name}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    {% endfor %}    
+                </div>                
             </div>               
     {% endif %}              
 </body>
